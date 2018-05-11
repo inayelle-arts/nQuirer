@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<link rel="stylesheet" href="../css/styles.css" type="text/css">
+	<script type="text/javascript" src="../js/handlers.js"></script>
+</head>
+<body>
+
+<div class="container">
+	<div class="row align-items-center top-margin-5">
+		<div class="col-6">
+			<h1>
+				<a class="a-no-decoration" href="index.jsp">nQuirer</a>
+			</h1>
+		</div>
+		<div class="col-6">
+			<div class="logins">
+				<a class="btn btn-primary" href="signin.html">Sign in</a>
+				<a class="btn btn-secondary" href="signup.html">Sign up</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="row align-items-center top-margin-5">
+		<div class="col">
+			<header class="text-align-center">
+				<h2>Creating test</h2>
+			</header>
+		</div>
+	</div>
+
+	<label for="test-title">Test title</label>
+	<input type="text" class="form-control w-100" id="test-title" placeholder="Enter test title...">
+	<div class="row top-margin-5">
+
+		<div class="col-4">
+			<button class="btn btn-light w-100" onclick="addQuestionClicked()">
+				Add question
+			</button>
+			<ul class="list-group" id="question-list">
+
+			</ul>
+			<button class="btn btn-light w-100" onclick="commitTestClicked()" id="commit-button" hidden	>
+				Commit test
+			</button>
+		</div>
+		<div class="col-8">
+			<form action="#" id="test-question-form" hidden>
+				<div id="answer-list">
+					<div class="form-group">
+						<label for="test-question">Question text</label>
+						<input type="text" class="form-control" id="test-question" placeholder="Enter question text...">
+					</div>
+
+					<div class="form-group">
+						<div class="row align-items-center">
+							<div class="col-9">
+								<label for="test-answer-1" class="d-inline">Answer text</label>
+								<input type="text" class="form-control" id="test-answer-1" placeholder="Enter possible answer...">
+							</div>
+							<div class="col">
+								<label class="form-check-label d-inline">
+									<input type="checkbox" class="form-check-input" id="test-answer-1-check">
+									Mark as correct
+								</label>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="row align-items-center">
+							<div class="col-9">
+								<label for="test-answer-2" class="d-inline">Answer text</label>
+								<input type="text" class="form-control" id="test-answer-2" placeholder="Enter possible answer...">
+							</div>
+							<div class="col">
+								<label class="form-check-label d-inline">
+									<input type="checkbox" class="form-check-input" id="test-answer-2-check">
+									Mark as correct
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<button type="button" class="btn btn-primary w-100" onclick="addAnswerClicked()">Add answer</button>
+			</form>
+
+		</div>
+	</div>
+</div>
+
+<script>
+	window.onunload = function ()
+	{
+		localStorage.clear();
+	};
+</script>
+
+</body>
+</html>

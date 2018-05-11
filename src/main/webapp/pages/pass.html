@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<link rel="stylesheet" href="../css/styles.css" type="text/css">
+	<script type="text/javascript" src="../js/handlers.js"></script>
+</head>
+<body>
+
+<div class="container">
+	<div class="row align-items-center top-margin-5">
+		<div class="col-6">
+			<h1>
+				<a class="a-no-decoration" href="index.jsp">nQuirer</a>
+			</h1>
+		</div>
+		<div class="col-6">
+			<div class="logins">
+				<a class="btn btn-primary" href="signin.html">Sign in</a>
+				<a class="btn btn-secondary" href="signup.html">Sign up</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="row align-items-center top-margin-5">
+		<div class="col">
+			<header class="text-align-center">
+				<h2>Test name</h2>
+			</header>
+		</div>
+	</div>
+
+	<div class="row top-margin-5">
+
+		<div class="col-4">
+			<ul class="list-group">
+
+				<li class="list-group-item" onclick="">
+					q1
+				</li>
+
+				<li class="list-group-item" onclick="">
+					q2
+				</li>
+
+			</ul>
+		</div>
+
+		<div class="col-8">
+			<fieldset class="form-group">
+				<legend>Question text</legend>
+				<div class="form-check">
+					<label class="form-check-label">
+						<input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+						Option one is this and that&mdash;be sure to include why it's great
+					</label>
+				</div>
+				<div class="form-check">
+					<label class="form-check-label">
+						<input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="option2">
+						Option two can be something else and selecting it will deselect option one
+					</label>
+				</div>
+			</fieldset>
+		</div>
+
+	</div>
+</div>
+
+<script>
+	window.onload = function ()
+	{
+		setTestAsPrimary(1);
+	};
+</script>
+</body>
+</html>
