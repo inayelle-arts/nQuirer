@@ -36,6 +36,10 @@ public class Servlet extends HttpServlet
 		model = (Model) maybeModel;
 		commands = new HashMap<>();
 		commands.put("/", new IndexCommand(model));
+		commands.put("/create", new CreateCommand(model));
+		commands.put("/pass", new PassCommand(model));
+		commands.put("/check", new CheckCommand(model));
+		commands.put("/validatetitlename", new ValidateTitleNameCommand(model));
 		Logger.status("Servlet", "initialized");
 	}
 	

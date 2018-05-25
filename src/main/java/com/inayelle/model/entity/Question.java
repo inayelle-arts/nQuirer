@@ -1,20 +1,29 @@
 package com.inayelle.model.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Question
 {
 	private int id;
+	private int ownerId;
 	private String content;
-	private String explanation;
-	private int answerHash;
-	private int testId;
+	private Set<Answer> answers;
 	
-	public Question(int id, String content, String explanation, int answerHash, int testId)
+	public Question(int id, int ownerId, String content)
 	{
 		this.id = id;
+		this.ownerId = ownerId;
 		this.content = content;
-		this.explanation = explanation;
-		this.answerHash = answerHash;
-		this.testId = testId;
+		this.answers = new HashSet<>();
+	}
+	
+	public Question(int id, int ownerId, String content, Set<Answer> answers)
+	{
+		this.id = id;
+		this.ownerId = ownerId;
+		this.content = content;
+		this.answers = answers;
 	}
 	
 	public int getId()
@@ -25,6 +34,18 @@ public class Question
 	public void setId(int id)
 	{
 		this.id = id;
+		for (var answer : answers)
+			answer.setOwnerId(id);
+	}
+	
+	public int getOwnerId()
+	{
+		return ownerId;
+	}
+	
+	public void setOwnerId(int ownerId)
+	{
+		this.ownerId = ownerId;
 	}
 	
 	public String getContent()
@@ -37,34 +58,23 @@ public class Question
 		this.content = content;
 	}
 	
-	public String getExplanation()
+	public Set<Answer> getAnswers()
 	{
-		return explanation;
+		return answers;
 	}
 	
-	public void setExplanation(String explanation)
+	public void setAnswers(Set<Answer> answers)
 	{
-		this.explanation = explanation;
+		this.answers = answers;
 	}
 	
-	public int getAnswerHash()
+	public Answer getAnswerById(int id)
 	{
-		return answerHash;
-	}
-	
-	public void setAnswerHash(int answerHash)
-	{
-		this.answerHash = answerHash;
-	}
-	
-	public int getTestId()
-	{
-		return testId;
-	}
-	
-	public void setTestId(int testId)
-	{
-		this.testId = testId;
+		for (var answer : answers)
+			if (answer.getId() == id)
+				return answer;
+		
+		return null;
 	}
 	
 	@Override
@@ -72,10 +82,9 @@ public class Question
 	{
 		return "Question{" +
 				"id=" + id +
+				", ownerId=" + ownerId +
 				", content='" + content + '\'' +
-				", explanation='" + explanation + '\'' +
-				", answerHash=" + answerHash +
-				", testId=" + testId +
+				", answers=" + answers +
 				'}';
 	}
 }

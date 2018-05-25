@@ -19,7 +19,8 @@ public class IndexCommand extends BaseCommand
 	@Override
 	public BaseCommand execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException
 	{
-		var tests = model.getLatestTests();
+		var tests = model.getTests();
+		
 		req.setAttribute("tests", tests);
 		
 		req.getRequestDispatcher(PAGE).forward(req, resp);

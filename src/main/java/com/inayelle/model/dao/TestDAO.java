@@ -1,146 +1,145 @@
 package com.inayelle.model.dao;
 
+import com.inayelle.model.dao.base.BaseGenericDAO;
+import com.inayelle.model.dao.base.ConnectionFactory;
+import com.inayelle.model.dao.exception.DAOException;
+import com.inayelle.model.entity.Question;
 import com.inayelle.model.entity.Test;
-import com.inayelle.model.entity.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashSet;
+import java.sql.*;
 import java.util.Set;
 
-public class TestDAO implements IGenericDAO<Test>
+public class TestDAO extends BaseGenericDAO<Test>
 {
 	@Override
-	public Test getById(int id) throws DAOException
+	protected Test parseOne(ResultSet resultSet) throws SQLException, DAOException
 	{
-		Connection connection;
-		PreparedStatement statement;
-		ResultSet resultSet;
+		int id = resultSet.getInt("id");
+		String
+				title = resultSet.getString("title"),
+				description = resultSet.getString("description");
 		
-		try
-		{
-			connection = ConnectionFactory.getConnection();
-			statement = connection.prepareStatement(SQL.GET_BY_ID.toString());
-			statement.setInt(1, id);
-			resultSet = statement.executeQuery();
-			
-			if (resultSet.next())
-				return parseOne(resultSet);
-			
-			return null;
-		}
-		catch (SQLException ex)
-		{
-			throw new DAOException("TestDAO::getAll", ex);
-		}
+		var questionDAO = new QuestionDAO();
+		
+		Set<Question> questions = questionDAO.getByOwnerId(id);
+		
+		return new Test(id, title, description, questions);
 	}
 	
 	@Override
-	public Test getFirst() throws DAOException
+	protected String getByIdQuery()
+	{
+		return SQL.GET_BY_ID.toString();
+	}
+	
+	@Override
+	protected String getByOwnerIdQuery()
 	{
 		return null;
 	}
 	
 	@Override
-	public Set<Test> getAll() throws DAOException
+	protected String getAllQuery()
 	{
-		Connection connection;
-		PreparedStatement statement;
-		ResultSet resultSet;
-		
-		Set<Test> result = new HashSet<>();
-		
-		try
-		{
-			connection = ConnectionFactory.getConnection();
-			statement = connection.prepareStatement(SQL.GET_ALL.toString());
-			resultSet = statement.executeQuery();
-			
-			while (resultSet.next())
-				result.add(parseOne(resultSet));
-			
-			return result;
-		}
-		catch (SQLException ex)
-		{
-			throw new DAOException("Test::getAll", ex);
-		}
+		return SQL.GET_ALL.toString();
+	}
+	
+	@Override
+	protected String insertQuery()
+	{
+		return SQL.INSERT.toString();
 	}
 	
 	@Override
 	public void update(Test entity) throws DAOException
 	{
-		Connection connection;
-		PreparedStatement statement;
-		
-		try
-		{
-			connection = ConnectionFactory.getConnection();
-			statement = connection.prepareStatement(SQL.UPDATE.toString());
-			statement.setInt(1, entity.getDuration());
-			statement.setString(2, entity.getName());
-			statement.setInt(3, entity.getTotalQuestions());
-			statement.setInt(4, entity.getId());
-			
-			statement.execute();
-		}
-		catch (SQLException ex)
-		{
-			throw new DAOException("TestDAO::getAll", ex);
-		}
+	
 	}
 	
 	@Override
 	public void delete(Test entity) throws DAOException
 	{
-		Connection connection;
-		PreparedStatement statement;
-		
-		try
-		{
-			connection = ConnectionFactory.getConnection();
-			statement = connection.prepareStatement(SQL.DELETE.toString());
-			statement.setInt(1, entity.getId());
-			
-			statement.execute();
-		}
-		catch (SQLException ex)
-		{
-			throw new DAOException("UserDAO::getAll", ex);
-		}
+	
 	}
 	
 	@Override
 	public void insert(Test entity) throws DAOException
 	{
-		Connection connection;
-		PreparedStatement statement;
+		Connection connection = null;
+		PreparedStatement statement = null;
+		
+		String title = entity.getTitle();
+		String description = entity.getDescription();
+		Set<Question> questions = entity.getQuestions();
 		
 		try
 		{
 			connection = ConnectionFactory.getConnection();
-			statement = connection.prepareStatement(SQL.INSERT.toString());
-			statement.setInt(1, entity.getDuration());
-			statement.setString(2, entity.getName());
-			statement.setInt(3, entity.getTotalQuestions());
-			
+			statement = connection.prepareStatement(this.insertQuery(), new String[]{"id"});
+			statement.setString(1, title);
+			statement.setString(2, description);
 			statement.execute();
+			
+			var generatedKeys = statement.getGeneratedKeys();
+			generatedKeys.next();
+			int newId = generatedKeys.getInt(1);
+			entity.setId(newId);
+			generatedKeys.close();
+			
+			var questionDAO = new QuestionDAO();
+			for (var question : questions)
+				questionDAO.insert(question);
 		}
-		catch (SQLException ex)
+		catch (SQLException exception)
 		{
-			throw new DAOException("UserDAO::getAll", ex);
+			throw new DAOException("TestDAO::insert", exception);
 		}
+		finally
+		{
+			ConnectionFactory.closeConnection(connection, statement, null);
+		}
+	}
+	
+	public boolean testWithTitleExists(String title) throws DAOException
+	{
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		
+		try
+		{
+			connection = ConnectionFactory.getConnection();
+			statement = connection.prepareStatement(this.getCountByLoginQuery());
+			statement.setString(1, title);
+			resultSet = statement.executeQuery();
+			
+			if (resultSet.next())
+				return resultSet.getInt(1) != 0;
+			
+			return false;
+		}
+		catch (SQLException exception)
+		{
+			throw new DAOException("TestDAO::insert", exception);
+		}
+		finally
+		{
+			ConnectionFactory.closeConnection(connection, statement, null);
+		}
+	}
+	
+	private String getCountByLoginQuery()
+	{
+		return SQL.COUNT_BY_LOGIN.toString();
 	}
 	
 	private enum SQL
 	{
 		GET_BY_ID("SELECT* FROM `tests` WHERE id = ?"),
 		GET_ALL("SELECT* FROM `tests`"),
-		DELETE("DELETE FROM `tests` WHERE id = ?"),
-		INSERT("INSERT INTO `tests` (duration, name, description, totalQuestions) VALUES (?, ?, ?, ?)"),
-		UPDATE("UPDATE `tests` SET duration = ?, name = ?, description = ?, totalQuestions = ? WHERE id = ?");
+		GET_BY_OWNER_ID("SELECT* FROM `tests` WHERE owner_id = ?"),
+		COUNT_BY_LOGIN("SELECT COUNT(*) FROM `tests` WHERE `title` = ?"),
+		INSERT("INSERT INTO `tests` (title, description) VALUES (?, ?)");
 		
 		private String value;
 		
@@ -154,18 +153,5 @@ public class TestDAO implements IGenericDAO<Test>
 		{
 			return value;
 		}
-	}
-	
-	private Test parseOne(ResultSet resultSet) throws SQLException
-	{
-		int
-				id = resultSet.getInt("id"),
-				duration = resultSet.getInt("duration"),
-				totalQuestions = resultSet.getInt("totalQuestions");
-		String
-				name = resultSet.getString("name"),
-				description = resultSet.getString("description");
-		
-		return new Test(id, duration, name, description, totalQuestions);
 	}
 }

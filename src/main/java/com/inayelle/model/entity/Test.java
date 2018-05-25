@@ -1,20 +1,49 @@
 package com.inayelle.model.entity;
 
+import java.util.Set;
+
 public class Test
 {
 	private int id;
-	private int duration;
-	private String name;
+	private String title;
 	private String description;
-	private int totalQuestions;
+	private Set<Question> questions;
 	
-	public Test(int id, int duration, String name, String description, int totalQuestions)
+	public Test(int id, String title, String description)
 	{
 		this.id = id;
-		this.duration = duration;
-		this.name = name;
+		this.title = title;
 		this.description = description;
-		this.totalQuestions = totalQuestions;
+	}
+	
+	public Test(int id, String title, String description, Set<Question> questions)
+	{
+		this.id = id;
+		this.title = title;
+		this.description = description;
+		this.questions = questions;
+	}
+	
+	public int getId()
+	{
+		return id;
+	}
+	
+	public void setId(int id)
+	{
+		this.id = id;
+		for (var question : questions)
+			question.setOwnerId(id);
+	}
+	
+	public String getTitle()
+	{
+		return title;
+	}
+	
+	public void setTitle(String title)
+	{
+		this.title = title;
 	}
 	
 	public String getDescription()
@@ -27,44 +56,23 @@ public class Test
 		this.description = description;
 	}
 	
-	public int getId()
+	public Set<Question> getQuestions()
 	{
-		return id;
+		return questions;
 	}
 	
-	public void setId(int id)
+	public void setQuestions(Set<Question> questions)
 	{
-		this.id = id;
+		this.questions = questions;
 	}
 	
-	public int getDuration()
+	public Question getQuestionById(int id)
 	{
-		return duration;
-	}
-	
-	public void setDuration(int duration)
-	{
-		this.duration = duration;
-	}
-	
-	public String getName()
-	{
-		return name;
-	}
-	
-	public void setName(String name)
-	{
-		this.name = name;
-	}
-	
-	public int getTotalQuestions()
-	{
-		return totalQuestions;
-	}
-	
-	public void setTotalQuestions(int totalQuestions)
-	{
-		this.totalQuestions = totalQuestions;
+		for (var question : questions)
+			if (question.getId() == id)
+				return question;
+		
+		return null;
 	}
 	
 	@Override
@@ -72,10 +80,9 @@ public class Test
 	{
 		return "Test{" +
 				"id=" + id +
-				", duration=" + duration +
-				", name='" + name + '\'' +
+				", title='" + title + '\'' +
 				", description='" + description + '\'' +
-				", totalQuestions=" + totalQuestions +
+				", questions=" + questions +
 				'}';
 	}
 }

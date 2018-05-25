@@ -1,0 +1,279 @@
+@import "bootsrap-scss/bootstrap";
+@import "bootsrap-scss/bootstrap-grid";
+@import "bootsrap-scss/bootstrap-reboot";
+
+html, body
+{
+	margin  : 0;
+	padding : 0;
+}
+
+body
+{
+	background-color : #F7F7F6;
+}
+
+input
+{
+	background-color : lighten(#F7F7F6, 10%) !important;
+}
+
+a
+{
+	color           : white !important;
+	text-decoration : none !important;
+	&:hover, &:active, &:visited, &:link
+	{
+		color : white;
+	}
+}
+
+#sign-in-up
+{
+	text-align : right;
+}
+
+.create-button
+{
+	text-align : center;
+	cursor     : pointer;
+	@extend .bg-secondary;
+	@extend .text-light;
+	&:hover
+	{
+		@extend .bg-primary;
+	}
+}
+
+#test-dos-group
+{
+	width : 100%;
+}
+
+#change-description-button
+{
+	border-right : 1px solid #F7F7F6 !important;
+	width        : 50%;
+	@extend .btn;
+	text-align   : center;
+	cursor       : pointer;
+	@extend .bg-info;
+	@extend .text-light;
+	&:hover
+	{
+		@extend .bg-primary;
+	}
+}
+
+#add-question-button
+{
+	width       : 50%;
+	@extend .btn;
+	text-align  : center;
+	cursor      : pointer;
+	@extend .bg-info;
+	@extend .text-light;
+	border-left : 1px solid #F7F7F6 !important;
+	display     : block !important;
+	&:hover
+	{
+		@extend .bg-primary;
+	}
+}
+
+#test-info
+{
+	position   : relative;
+	height     : 50%;
+	width      : 75%;
+	left       : 15%;
+	text-align : center;
+}
+
+#submit-test
+{
+	@extend .btn;
+	@extend .btn-success;
+	margin-top              : 1px;
+	width                   : 100%;
+	border-top-right-radius : 0;
+	border-top-left-radius  : 0;
+}
+
+.list-group-item
+{
+	cursor : pointer;
+	&:hover
+	{
+		background : whitesmoke;
+	}
+}
+
+.active
+{
+	cursor : initial;
+	&:hover
+	{
+		@extend .bg-primary;
+	}
+}
+
+.answer
+{
+	width : 100%;
+	input
+	{
+		width   : 79%;
+		display : inline-block;
+	}
+	
+	.btn-group
+	{
+		//display    : inline-block;
+		margin-top  : -5px;
+		margin-left : 7px;
+		width       : 20% !important;
+		//margin-left : 13px;
+		button
+		{
+			display   : inline-block;
+			font-size : 14px;
+		}
+	}
+}
+
+.logins
+{
+	text-align     : right;
+	vertical-align : middle;
+}
+
+.text-align-center
+{
+	text-align : center;
+}
+
+.text-align-right
+{
+	text-align : right;
+}
+
+#sign-in-form
+{
+	text-align : center;
+	margin-top : 15%;
+}
+
+#sign-up-form
+{
+	text-align : center;
+	margin-top : 15%;
+}
+
+.top-margin-5
+{
+	margin-top : 5%;
+}
+
+.a-no-decoration
+{
+	&:hover, &:visited, &:link, &:active
+	{
+		text-decoration : none;
+	}
+}
+
+.question-text
+{
+	width   : 85%;
+	display : inline-block;
+}
+
+.question-number
+{
+	text-align : right;
+	display    : inline-block;
+	width      : 10%;
+}
+
+.no-user-select
+{
+	user-select : none;
+}
+
+#test-pass-form
+{
+	label
+	{
+		font-size : 20px;
+	}
+	input
+	{
+		margin-top : 10px;
+	}
+	.list-group-item
+	{
+		cursor : pointer;
+	}
+	.bg-success
+	{
+		@extend .text-light;
+		.text-muted
+		{
+			@extend .text-light;
+		}
+	}
+}
+
+.answer-text
+{
+	display          : inline-block;
+	width            : 85%;
+	background-color : initial;
+}
+
+.answer-text-correct
+{
+	@extend .bg-success;
+}
+
+.answer-number
+{
+	display    : inline-block;
+	width      : 14%;
+	text-align : right;
+	@extend .text-muted;
+}
+
+.non-clickable
+{
+	cursor : none !important;
+}
+
+#test-result-form
+{
+	@extend #test-pass-form;
+	.bg-danger
+	{
+		color : white !important;
+		.text-muted
+		{
+			color : white !important;
+		}
+		&:hover
+		{
+			background-color : darken(#DC3545, 10%) !important;
+		}
+	}
+	.bg-success
+	{
+		&:hover
+		{
+			background-color : darken(#28A745, 10%) !important;
+		}
+	}
+	li
+	{
+		cursor : default !important;
+	}
+}
