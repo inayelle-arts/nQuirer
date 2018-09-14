@@ -15,15 +15,15 @@ public final class ConnectionFactory
 	
 	static
 	{
-		url = "jdbc:mysql://192.168.1.218:3306/nquirer_db" +
+		url = "jdbc:mysql://sql7.freemysqlhosting.net/sql7256821" +
 				"?verifyServerCertificate=false" +
 				"&useSSL=false" +
 				"&requireSSL=false" +
 				"&useLegacyDatetimeCode=false" +
 				"&amp" +
 				"&serverTimezone=UTC";
-		user = "root";
-		pass = "";
+		user = "sql7256821";
+		pass = "wElD7d3SKH";
 		
 		try
 		{
